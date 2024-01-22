@@ -5,8 +5,8 @@ function Pipe() {
     this.top = random(height / 6, 3 / 4 * height);
     this.bottom = height - (this.top + this.mellemrum);
     this.x = width;
-    this.w = 80;
-    this.speed = 6;
+    this.w = 85;
+    this.speed = 4;
   
     this.highlight = false;
   
@@ -19,22 +19,25 @@ function Pipe() {
       }
       this.highlight = false;
       return false;
-    }
+    } 
   
     this.show = function() {
-      fill(0,255,0);
+      fill(0,0,0);
       if (this.highlight) {
-        fill(255,0, 0);
+        fill(0,0, 0);
       }
       rect(this.x, 0, this.w, this.top);
       rect(this.x, height - this.bottom, this.w, this.bottom);
+      image(pipeimg,this.x, height - this.bottom, this.w, this.bottom);
+      image(pipeimg2,this.x, 0, this.w, this.top)
+
     }
   
     this.update = function() {
       this.x -= this.speed;
     }
   
-    this.offscreen = function() {
+    this.offscreen = function() { // checker hvis røret er ude for x
       if (this.x < -this.w) {
         return true;
       } else {

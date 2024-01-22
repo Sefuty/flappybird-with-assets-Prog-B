@@ -1,39 +1,53 @@
-// Daniel Shiffman
-// http://codingtra.in
-// http://patreon.com/codingtrain
-// Code for: https://youtu.be/cXgA1d_E-jY&
+let bird;
+let pipes = [];
+let birdimg;
+let pipeimg;
+let pipeimg2;
+let gameOver = false;
+let background2;
 
-
-var bird;
-var pipes = [];
+function preload() {
+  birdimg = loadImage('media/flappybird-animation.gif');
+  pipeimg = loadImage("media/pipe-bottom.png");
+  pipeimg2 = loadImage("media/pipe-top.png");
+  background2 = loadImage("media/background.png")
+}
 
 function setup() {
-  createCanvas(1920, 1080);
+  createCanvas(1450, 900);
   bird = new Bird();
   pipes.push(new Pipe());
 }
 
 function draw() {
-  background(0);
+  background(background2);
 
-  for (var i = pipes.length-1; i >= 0; i--) {
-    pipes[i].show();
-    pipes[i].update();
 
-    if (pipes[i].hits(bird)) {
-      console.log("HIT");
+  if (!gameOver) {
+    for (let i = pipes.length - 1; i >= 0; i--) {
+      pipes[i].show();
+      pipes[i].update();
+
+      if (pipes[i].hits(bird)) {
+        gameOver = true;
+      }
+
+      if (pipes[i].offscreen()) {
+        pipes.splice(i, 1);
+      }
     }
 
-    if (pipes[i].offscreen()) {
-      pipes.splice(i, 1);
+    bird.update();
+    bird.show();
+
+    if (frameCount % 200 == 0) {
+      pipes.push(new Pipe());
     }
-  }
-
-  bird.update();
-  bird.show();
-
-  if (frameCount % 75 == 0) {
-    pipes.push(new Pipe());
+  } else {
+    textAlign(CENTER);
+    textSize(64);
+    fill(255, 0, 0);
+    text("Game Over", width / 2, height / 2);
   }
 }
 
